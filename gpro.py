@@ -10,25 +10,26 @@ from time import sleep
 camera = GoProHero(password='uclaaiaa')
 camera.command('power', 'on')
 sleep(5) #wait for camera to finish powering on
-# TODO: check status for camera ready instead of just sleeping
-# status = camera.status()
+# while True:
+# 	status = camera.status()
+# 	if (status["summary"] == "on"):
+# 		break
+
 camera.command('preview', 'on')
 camera.command('mode', 'still')
-# TODO: See if we can set the picture resolution
-# camera.command('picres', '8MP med')
+camera.command('picres', '8MP med') # TODO: See if we can set the picture resolution
+# startingimgnum = camera.status()["npics"] #TODO: See if this works
 startingimgnum = 2448 #This number needs to be set every time the program runs
-imagecount = 0
 
 while True:
 	camera.command('record', 'on')
 	sleep(1.5) # wait for the gopro to save the picture
-	filename = "{0}.jpg".format(imagecount)
-	url = "http://10.5.5.9:8080/videos/DCIM/102GOPRO/GOPR{0}.JPG".format(startingimgnum)
+	filename = "GOPR{0}.JPG".format(startingimgnum)
+	url = "http://10.5.5.9:8080/videos/DCIM/102GOPRO/{0}".format(filename)
 	urllib.urlretrieve(url, filename)
 	sleep(5)
 	sp.call(["target_spotter", filename])
 	startingimgnum = startingimgnum + 1
-	imagecount = imagecount + 1
 
 
 
