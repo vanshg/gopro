@@ -17,16 +17,18 @@ camera.command('mode', 'still')
 # TODO: See if we can set the picture resolution
 # camera.command('picres', '8MP med')
 startingimgnum = 2448 #This number needs to be set every time the program runs
+imagecount = 0
 
 while True:
 	camera.command('record', 'on')
 	sleep(1.5) # wait for the gopro to save the picture
-	filename = "{0}.jpg".format(startingimgnum)
+	filename = "{0}.jpg".format(imagecount)
 	url = "http://10.5.5.9:8080/videos/DCIM/102GOPRO/GOPR{0}.JPG".format(startingimgnum)
 	urllib.urlretrieve(url, filename)
 	sleep(5)
 	sp.call(["target_spotter", filename])
 	startingimgnum = startingimgnum + 1
+	imagecount = imagecount + 1
 
 
 
